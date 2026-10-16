@@ -12,10 +12,6 @@ concurrency:
   group: update
   cancel-in-progress: false
 
-env:
-  # Set to the lowest upstream version this repo should track.
-  MINIMUM_TRACKING_VERSION: "2.2.2100"
-
 jobs:
   update:
     runs-on: ubuntu-latest

@@ -66,6 +66,7 @@
             buildAttr = "suwayomi-server";
           };
           update-branches = flake-lib.lib.mkUpdateBranches {
+            minimumTrackingVersion = "2.2.2100";
             inherit pkgs source;
             pinSchema = "github-asset";
           };

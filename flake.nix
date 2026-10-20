@@ -63,7 +63,6 @@
           default = suwayomi-server;
           update-version = flake-lib.lib.mkUpdateVersion {
             inherit pkgs source;
-            buildAttr = "suwayomi-server";
           };
           update-branches = flake-lib.lib.mkUpdateBranches {
             minimumTrackingVersion = "2.2.2100";

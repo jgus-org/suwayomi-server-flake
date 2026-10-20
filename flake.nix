@@ -4,6 +4,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    treefmt-nix = {
+      url = "github:numtide/treefmt-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     flake-lib = {
       url = "github:jgus-org/flake-lib/v1";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -11,7 +15,14 @@
     };
   };
 
-  outputs = { self, nixpkgs, flake-utils, flake-lib }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      flake-utils,
+      treefmt-nix,
+      flake-lib,
+    }:
     let
       pin = import ./pin.nix;
       inherit (pin) version;
@@ -22,10 +33,18 @@
         asset = "Suwayomi-Server-v\${version}.jar";
       };
     in
-    flake-utils.lib.eachDefaultSystem (system:
+    flake-utils.lib.eachDefaultSystem (
+      system:
       let
         pkgs = import nixpkgs { inherit system; };
-        jdk = flake-lib.lib.warnIfNewerMajor { inherit pkgs; name = "jdk25_headless"; };
+        treefmtEval = treefmt-nix.lib.evalModule pkgs {
+          projectRootFile = "flake.nix";
+          programs.nixfmt.enable = true;
+        };
+        jdk = flake-lib.lib.warnIfNewerMajor {
+          inherit pkgs;
+          name = "jdk25_headless";
+        };
 
         src = pkgs.fetchurl {
           url = "https://github.com/${source.owner}/${source.repo}/releases/download/v${version}/Suwayomi-Server-v${version}.jar";
@@ -58,6 +77,10 @@
         };
       in
       {
+        formatter = treefmtEval.config.build.wrapper;
+
+        checks.formatting = treefmtEval.config.build.check self;
+
         packages = {
           inherit suwayomi-server;
           default = suwayomi-server;
@@ -70,5 +93,6 @@
             pinSchema = "github-asset";
           };
         };
-      });
+      }
+    );
 }

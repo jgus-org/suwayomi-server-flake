@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -11,7 +10,6 @@
     flake-lib = {
       url = "github:jgus-org/flake-lib/v1";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
     };
   };
 
@@ -19,7 +17,6 @@
     {
       self,
       nixpkgs,
-      flake-utils,
       treefmt-nix,
       flake-lib,
     }:
@@ -33,7 +30,7 @@
         asset = "Suwayomi-Server-v\${version}.jar";
       };
     in
-    flake-utils.lib.eachDefaultSystem (
+    flake-lib.lib.eachDefaultSystem (
       system:
       let
         pkgs = import nixpkgs { inherit system; };

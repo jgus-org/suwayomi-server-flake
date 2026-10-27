@@ -40,6 +40,4 @@ JAVA_TOOL_OPTIONS="-Dsuwayomi.tachidesk.config.server.rootDir=/config -Dsuwayomi
 
 **One property is fixed by the launcher.** It passes `-Dsuwayomi.tachidesk.config.server.initialOpenInBrowserEnabled=false` before `-jar`, and a command-line `-D` takes precedence over the same key supplied through `JAVA_TOOL_OPTIONS`, so that key cannot be changed from the environment. Everything else is left at upstream's default.
 
-## License
-
-`meta.license` is [MPL-2.0](https://www.mozilla.org/en-US/MPL/2.0/), upstream's own license. The package installs upstream's release jar unmodified and adds only the launcher, so it adds no license obligation of its own; extensions you install at run time carry their own licenses.
+See [LICENSE.md](LICENSE.md) for licensing and copyright, and [NOTICE.md](NOTICE.md) for the terms of upstream and distributed artifacts.
